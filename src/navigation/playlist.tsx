@@ -24,6 +24,7 @@ const PlaylistScreen = ({ route }: Props) => {
   }, [id]);
 
   const artistName = "--";
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ paddingTop: 40, paddingBottom: 12, alignItems: "center" }}>
@@ -63,7 +64,7 @@ const PlaylistScreen = ({ route }: Props) => {
         </Text>
         <View>
           {(playlist?.tracks || []).map((track) => (
-            <TrackCard key={track.id} title={track.title} artist={artistName} />
+            <TrackCard key={track.id} track={track} />
           ))}
         </View>
       </View>

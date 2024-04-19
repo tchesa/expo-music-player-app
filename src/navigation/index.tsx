@@ -26,8 +26,10 @@ export default function Navigation() {
         <RootStack.Screen name="Home" component={Home} />
         <RootStack.Screen name="Album" component={Album} />
         <RootStack.Screen name="Artist" component={Artist} />
-        <RootStack.Screen name="Player" component={Player} />
         <RootStack.Screen name="Playlist" component={Playlist} />
+        <RootStack.Group screenOptions={{ presentation: "modal" }}>
+          <RootStack.Screen name="Player" component={Player} />
+        </RootStack.Group>
       </RootStack.Navigator>
     </NavigationContainer>
   );

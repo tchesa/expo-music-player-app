@@ -1,18 +1,27 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import { Track } from "../entities/track";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
-  // id: string;
-  title: string;
-  artist: string;
+  track: Track;
   onPress?: () => void;
 };
 
-const TrackCard = ({ title, artist }: Props) => {
+const TrackCard = ({ track }: Props) => {
+  const navigation = useNavigation();
+
+  const { title } = track;
+
+  const handlePress = () => {
+    navigation.navigate("Player");
+  };
+
   return (
     <TouchableOpacity
       style={{
         paddingVertical: 4,
       }}
+      onPress={handlePress}
     >
       <Text
         style={{
@@ -30,7 +39,7 @@ const TrackCard = ({ title, artist }: Props) => {
           lineHeight: 16,
         }}
       >
-        {artist}
+        --
       </Text>
     </TouchableOpacity>
   );

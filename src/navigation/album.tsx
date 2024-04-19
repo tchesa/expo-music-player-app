@@ -63,7 +63,7 @@ const AlbumScreen = ({ route }: Props) => {
         </Text>
         <View>
           {(album?.tracks || []).map((track) => (
-            <TrackCard key={track.id} title={track.title} artist={artistName} />
+            <TrackCard key={track.id} track={track} />
           ))}
         </View>
       </View>

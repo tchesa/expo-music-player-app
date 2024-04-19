@@ -1,9 +1,9 @@
-import { Playlist } from "../entities/playlist";
+import { Album } from "../entities/album";
 import contentful from "../lib/contentful";
 import { trackContenfulEntryToTrack } from "./tracks";
 
-export type PlaylistEntrySkeleton = {
-  contentTypeId: "playlist";
+export type AlbumEntrySkeleton = {
+  contentTypeId: "album";
   sys: {
     id: string;
   };
@@ -20,19 +20,17 @@ export type PlaylistEntrySkeleton = {
   };
 };
 
-const playlistContenfulEntryToPlaylist = (
-  entry: PlaylistEntrySkeleton
-): Playlist => ({
+const albumContenfulEntryToAlbum = (entry: AlbumEntrySkeleton): Album => ({
   id: entry.sys.id,
   title: entry.fields.title,
   thumbnail: `https:${entry.fields.thumbnail?.fields.file.url}`,
   tracks: (entry.fields.tracks || []).map(trackContenfulEntryToTrack),
 });
 
-export const getAllPlaylists = async (): Promise<Playlist[]> => {
+export const getAllAlbums = async (): Promise<Album[]> => {
   const response = await contentful.getEntries<any>({
-    content_type: "playlist",
+    content_type: "album",
   });
 
-  return response.items.map(playlistContenfulEntryToPlaylist as any);
+  return response.items.map(albumContenfulEntryToAlbum as any);
 };

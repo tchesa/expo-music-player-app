@@ -3,20 +3,20 @@ import SectionHeader from "../components/section-header";
 import AssetSquareButton from "../components/asset-square-button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from ".";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import contentful from "../lib/contentful";
-import { PlaylistData } from "../entities/playlist";
+import { Playlist, PlaylistData } from "../entities/playlist";
 import { EntrySkeletonType, FieldsType } from "contentful";
+import { getAllPlaylists } from "../services/playlist";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
 const Home = ({ navigation }: Props) => {
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const fetchData = async () => {
-    const res = await contentful.getEntries<EntrySkeletonType<PlaylistData>>({
-      content_type: "playlist",
-    });
+    const res = await getAllPlaylists();
 
-    console.log("res", res.items[0].fields.title);
+    setPlaylists(res);
   };
 
   useEffect(() => {
@@ -41,15 +41,15 @@ const Home = ({ navigation }: Props) => {
             columnGap: 4,
           }}
         >
-          <AssetSquareButton
-            onPress={() => navigation.navigate("Playlist", { id: "1" })}
-          />
-          <AssetSquareButton
-            onPress={() => navigation.navigate("Playlist", { id: "1" })}
-          />
-          <AssetSquareButton
-            onPress={() => navigation.navigate("Playlist", { id: "1" })}
-          />
+          {playlists.map((playlist) => (
+            <AssetSquareButton
+              key={playlist.id}
+              image={playlist.thumbnail}
+              onPress={() =>
+                navigation.navigate("Playlist", { id: playlist.id })
+              }
+            />
+          ))}
         </View>
       </View>
       <View style={{ marginBottom: 24 }}>

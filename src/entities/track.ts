@@ -6,6 +6,7 @@ export type TrackData = {
 };
 
 export type Track = {
+  id: string;
   title: string;
   audioFile: string;
 };

@@ -8,21 +8,26 @@ import { Playlist } from "../entities/playlist";
 import { getAllPlaylists } from "../services/playlist";
 import { getAllAlbums } from "../services/album";
 import { Album } from "../entities/album";
+import { getAllArtists } from "../services/artist";
+import { Artist } from "../entities/artist";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
 const Home = ({ navigation }: Props) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
+  const [artists, setArtists] = useState<Artist[]>([]);
 
   const fetchData = async () => {
-    const [playlists, albums] = await Promise.all([
+    const [playlists, albums, artists] = await Promise.all([
       getAllPlaylists(),
       getAllAlbums(),
+      getAllArtists(),
     ]);
 
     setPlaylists(playlists);
     setAlbums(albums);
+    setArtists(artists);
   };
 
   useEffect(() => {
@@ -66,15 +71,14 @@ const Home = ({ navigation }: Props) => {
             columnGap: 4,
           }}
         >
-          <AssetSquareButton
-            onPress={() => navigation.navigate("Artist", { id: "1" })}
-          />
-          <AssetSquareButton
-            onPress={() => navigation.navigate("Artist", { id: "1" })}
-          />
-          <AssetSquareButton
-            onPress={() => navigation.navigate("Artist", { id: "1" })}
-          />
+          {artists.map((artist) => (
+            <AssetSquareButton
+              rounded
+              key={artist.id}
+              image={artist.avatar}
+              onPress={() => navigation.navigate("Artist", { id: artist.id })}
+            />
+          ))}
         </View>
       </View>
       <View style={{ marginBottom: 24 }}>

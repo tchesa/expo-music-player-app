@@ -20,7 +20,9 @@ export type AlbumEntrySkeleton = {
   };
 };
 
-const albumContenfulEntryToAlbum = (entry: AlbumEntrySkeleton): Album => ({
+export const albumContenfulEntryToAlbum = (
+  entry: AlbumEntrySkeleton
+): Album => ({
   id: entry.sys.id,
   title: entry.fields.title,
   thumbnail: `https:${entry.fields.thumbnail?.fields.file.url}`,

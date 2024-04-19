@@ -20,8 +20,14 @@ export type TrackEntrySkeleton = {
 
 export const trackContenfulEntryToTrack = (
   entry: TrackEntrySkeleton
-): Track => ({
-  id: entry.sys.id,
-  title: entry.fields.title || "",
-  audioFile: `https://${entry.fields.audioFile.fields.file.url}`,
-});
+): Track => {
+  const audioFileUrl = entry.fields?.audioFile?.fields.file.url
+    ? `https://${entry.fields.audioFile.fields.file.url}`
+    : "";
+
+  return {
+    id: entry.sys.id,
+    title: entry.fields?.title || "",
+    audioFile: audioFileUrl,
+  };
+};

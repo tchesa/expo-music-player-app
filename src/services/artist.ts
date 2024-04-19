@@ -34,3 +34,8 @@ export const getAllArtists = async (): Promise<Artist[]> => {
 
   return response.items.map(artistContenfulEntryToArtist as any);
 };
+
+export const getArtist = async (id: string): Promise<Artist> => {
+  const response = await contentful.getEntry<any>(id);
+  return artistContenfulEntryToArtist(response as any);
+};

@@ -1,49 +1,74 @@
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import TrackCard from "../components/track-card";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from ".";
+import { useEffect, useState } from "react";
+import { getPlaylist } from "../services/playlist";
+import { Playlist } from "../entities/playlist";
 
-const Playlist = () => {
-  const artistName = "Artist Name";
+type Props = NativeStackScreenProps<RootStackParamList, "Playlist">;
+
+const THUMBNAIL_SIZE = 280;
+
+const PlaylistScreen = ({ route }: Props) => {
+  const { id } = route.params;
+  const [playlist, setPlaylist] = useState<Playlist>();
+
+  const fetchData = async (id: string) => {
+    const playlist = await getPlaylist(id);
+    setPlaylist(playlist);
+  };
+
+  useEffect(() => {
+    fetchData(id);
+  }, [id]);
+
+  const artistName = "--";
   return (
     <View style={{ flex: 1 }}>
       <View style={{ paddingTop: 40, paddingBottom: 12, alignItems: "center" }}>
-        <View style={{ width: 280, height: 280, backgroundColor: "gray" }} />
+        {playlist?.thumbnail ? (
+          <Image
+            source={{ uri: playlist.thumbnail }}
+            style={{ width: THUMBNAIL_SIZE, height: THUMBNAIL_SIZE }}
+          />
+        ) : (
+          <View
+            style={{
+              width: THUMBNAIL_SIZE,
+              height: THUMBNAIL_SIZE,
+              backgroundColor: "gray",
+            }}
+          />
+        )}
       </View>
       <View style={{ padding: 16 }}>
         <Text
           style={{
             fontSize: 24,
             fontWeight: "bold",
-            marginBottom: 16,
+            marginBottom: 4,
           }}
         >
-          Playlist Name
+          {playlist?.title}
         </Text>
-        {/* <Text
+        <Text
           style={{
             fontSize: 16,
-            marginBottom: 8,
+            marginBottom: 16,
             fontWeight: "bold",
           }}
         >
-          Created by user
-        </Text> */}
+          {artistName}
+        </Text>
         <View>
-          <TrackCard title="Track 1" artist={artistName} />
-          <TrackCard title="Track 2" artist={artistName} />
-          <TrackCard title="Track 3" artist={artistName} />
-          <TrackCard title="Track 4" artist={artistName} />
-          <TrackCard title="Track 5" artist={artistName} />
-          <TrackCard title="Track 6" artist={artistName} />
-          <TrackCard title="Track 7" artist={artistName} />
-          <TrackCard title="Track 8" artist={artistName} />
-          <TrackCard title="Track 9" artist={artistName} />
-          <TrackCard title="Track 10" artist={artistName} />
-          <TrackCard title="Track 11" artist={artistName} />
-          <TrackCard title="Track 12" artist={artistName} />
+          {(playlist?.tracks || []).map((track) => (
+            <TrackCard key={track.id} title={track.title} artist={artistName} />
+          ))}
         </View>
       </View>
     </View>
   );
 };
 
-export default Playlist;
+export default PlaylistScreen;

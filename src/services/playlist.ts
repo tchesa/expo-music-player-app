@@ -36,3 +36,8 @@ export const getAllPlaylists = async (): Promise<Playlist[]> => {
 
   return response.items.map(playlistContenfulEntryToPlaylist as any);
 };
+
+export const getPlaylist = async (id: string): Promise<Playlist> => {
+  const response = await contentful.getEntry<any>(id);
+  return playlistContenfulEntryToPlaylist(response as any);
+};

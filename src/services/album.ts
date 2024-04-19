@@ -36,3 +36,8 @@ export const getAllAlbums = async (): Promise<Album[]> => {
 
   return response.items.map(albumContenfulEntryToAlbum as any);
 };
+
+export const getAlbum = async (id: string): Promise<Album> => {
+  const response = await contentful.getEntry<any>(id);
+  return albumContenfulEntryToAlbum(response as any);
+};

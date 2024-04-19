@@ -3,12 +3,27 @@ import SectionHeader from "../components/section-header";
 import AssetSquareButton from "../components/asset-square-button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from ".";
+import { useEffect, useState } from "react";
+import { Artist } from "../entities/artist";
+import { getArtist } from "../services/artist";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Artist">;
 
-const Artist = ({ navigation }: Props) => {
+const ArtistScreen = ({ navigation, route }: Props) => {
+  const [artist, setArtist] = useState<Artist>();
+  const { id } = route.params;
+
+  const fetchData = async (id: string) => {
+    const artist = await getArtist(id);
+    setArtist(artist);
+  };
+
+  useEffect(() => {
+    fetchData(id);
+  }, [id]);
+
   return (
-    <View style={{ borderWidth: 1, flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View
         style={{
           backgroundColor: "gray",
@@ -28,7 +43,7 @@ const Artist = ({ navigation }: Props) => {
             textShadowRadius: 12,
           }}
         >
-          The Artist Page
+          {artist?.name}
         </Text>
       </View>
       <View style={{ padding: 16 }}>
@@ -49,4 +64,4 @@ const Artist = ({ navigation }: Props) => {
   );
 };
 
-export default Artist;
+export default ArtistScreen;

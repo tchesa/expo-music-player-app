@@ -1,6 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { Track } from "../entities/track";
 import { useNavigation } from "@react-navigation/native";
+import usePlayer from "../hooks/usePlayer";
 
 type Props = {
   track: Track;
@@ -9,11 +10,13 @@ type Props = {
 
 const TrackCard = ({ track }: Props) => {
   const navigation = useNavigation();
+  const { playTrack } = usePlayer();
 
   const { title } = track;
 
   const handlePress = () => {
     navigation.navigate("Player");
+    playTrack(track);
   };
 
   return (

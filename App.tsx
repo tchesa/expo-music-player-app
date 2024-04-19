@@ -1,10 +1,13 @@
 import { StyleSheet, View } from "react-native";
 import Navigation from "./src/navigation";
+import { PlayerProvider } from "./src/providers/player-provider";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Navigation />
+      <PlayerProvider>
+        <Navigation />
+      </PlayerProvider>
     </View>
   );
 }
